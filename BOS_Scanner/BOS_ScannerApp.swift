@@ -13,8 +13,10 @@ import SwiftData
 struct BOS_ScannerApp: App {
     var body: some Scene {
         WindowGroup {
+//            MainView()
+//                .modelContainer(for: [TableModel.self, ItemModel.self])
             MainView()
-                .modelContainer(for: [TableModel.self, ItemModel.self])
+                .modelContainer(for: [NewEntryModel.self])
         }
     }
 }
