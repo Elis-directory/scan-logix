@@ -6,7 +6,6 @@
 //
 
 
-import Foundation
 import SwiftUI
 import SwiftData
 
@@ -17,14 +16,16 @@ class NewEntryModel: Identifiable {
     var price: CGFloat
     var upc: String
     var category: String
+    var imageData: Data?
 
-    init(id: UUID, name: String, price: CGFloat, upc: String, category: String) {
+    init(id: UUID, name: String, price: CGFloat, upc: String, category: String, imageData: Data? = nil) {
         self.id = id
         self.name = name
         self.price = price
         self.upc = upc
         self.category = category
+        self.imageData = imageData
     }
-
 }
+
 

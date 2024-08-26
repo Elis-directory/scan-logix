@@ -13,7 +13,7 @@ struct AddItemView: View {
     @Environment(\.modelContext) private var context
     @Binding var item: String
     @State private var price: String = ""
-    @State private var upc: String = ""
+    @State var upc: String
     @State private var selectedPhoto: UIImage? = nil
     @State private var isPhotoPickerPresented: Bool = false
     @Environment(\.presentationMode) var presentationMode
@@ -96,16 +96,32 @@ struct AddItemView: View {
             return
         }
 
-        let newItem = NewEntryModel(id: UUID(), name: item, price: priceValue, upc: upc, category: "Default Category")
+        let imageData = selectedPhoto?.jpegData(compressionQuality: 0.8) // Convert image to Data
+
+        let newItem = NewEntryModel(
+            id: UUID(),
+            name: item,
+            price: CGFloat(priceValue),
+            upc: upc,
+            category: "Default Category",
+            imageData: imageData // Save image data
+        )
+        
         context.insert(newItem)
         
         do {
             try context.save()
+            print("Item saved successfully with image data.")
         } catch {
             print("Failed to save item: \(error.localizedDescription)")
         }
     }
 }
+
+
+
+
+
 
 struct PhotoPicker: UIViewControllerRepresentable {
     @Binding var selectedImage: UIImage?
@@ -156,7 +172,7 @@ struct PhotoPicker: UIViewControllerRepresentable {
   
     
 
-    return AddItemView(item: $item)
+    return AddItemView(item: $item, upc: upc)
 }
 
 

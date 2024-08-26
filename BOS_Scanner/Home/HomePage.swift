@@ -80,7 +80,7 @@ struct HomePage: View {
                 .sheet(isPresented: $addItemSheet, onDismiss: {
                     addItemSheet = false
                 }) {
-                    AddItemView(item: self.$newItem.title)
+//                    AddItemView(item: self.$newItem.title, upc:  self.$newItem.)
                 }
             }
         }

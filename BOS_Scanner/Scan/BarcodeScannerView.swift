@@ -15,6 +15,7 @@ struct BarcodeScannerView: UIViewControllerRepresentable {
     @Binding var isPresenting: Bool
     @Binding var matchedItem: NewEntryModel?
     @Binding var showAddItemView: Bool
+    @Binding var scannedUPC: String? // Add this binding to pass the scanned UPC
 
     class Coordinator: NSObject, AVCaptureMetadataOutputObjectsDelegate {
         var parent: BarcodeScannerView
@@ -90,7 +91,7 @@ struct BarcodeScannerView: UIViewControllerRepresentable {
 
     // Stop the capture session to avoid repeated detections
     func stopCaptureSession() {
-        DispatchQueue.global(qos: .userInitiated).async {
+        DispatchQueue.main.async {
             let captureSession = AVCaptureSession()
             captureSession.stopRunning()
         }
@@ -104,10 +105,12 @@ struct BarcodeScannerView: UIViewControllerRepresentable {
                 isPresenting = false
             } else {
                 print("No match found. Triggering AddItemView.") // Debugging print statement
+                self.scannedUPC = code // Store the scanned UPC code
                 showAddItemView = true
                 isPresenting = false
             }
         }
     }
 }
+
 

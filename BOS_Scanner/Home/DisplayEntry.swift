@@ -12,7 +12,7 @@ import PhotosUI
 
 struct DisplayEntry: View {
     @Environment(\.modelContext) private var context
-    @Binding var item: NewEntryModel? 
+    @Binding var item: NewEntryModel?
     @State private var selectedPhoto: UIImage? = nil
     @State private var isPhotoPickerPresented: Bool = false
     @Environment(\.presentationMode) var presentationMode
@@ -24,12 +24,21 @@ struct DisplayEntry: View {
                     HStack {
                         ZStack {
                             if let selectedPhoto = selectedPhoto {
+                                // Display the selected photo if available
                                 Image(uiImage: selectedPhoto)
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
                                     .frame(width: 80, height: 80)
                                     .clipShape(Circle())
+                            } else if let imageData = item.imageData, let uiImage = UIImage(data: imageData) {
+                                // Display the image from the item if available
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 80, height: 80)
+                                    .clipShape(Circle())
                             } else {
+                                // Display a placeholder if no image is available
                                 Circle()
                                     .fill(Color.gray.opacity(0.3))
                                     .frame(width: 80, height: 80)
@@ -46,7 +55,6 @@ struct DisplayEntry: View {
                 }
                 
                 Section {
-                    // Using temporary bindings to safely handle the optional item
                     TextField("Price", text: Binding(
                         get: { String(format: "%.2f", item.price) },
                         set: { item.price = Double($0) ?? 0.0 }
@@ -59,8 +67,6 @@ struct DisplayEntry: View {
                         set: { item.upc = $0 }
                     ))
                     .textFieldStyle(PlainTextFieldStyle())
-                    
-                    // Add any additional fields as needed
                 }
             } else {
                 // Handle the case where item is nil, maybe show an error message or a placeholder
@@ -80,9 +86,9 @@ struct DisplayEntry: View {
 
     func saveItem() {
         if let item = item {
-//            if let selectedPhoto = selectedPhoto {
-//                item.imageData = selectedPhoto.jpegData(compressionQuality: 0.8)
-//            }
+            if let selectedPhoto = selectedPhoto {
+                item.imageData = selectedPhoto.jpegData(compressionQuality: 0.8)
+            }
 
             do {
                 try context.save() // Save changes to the context
@@ -92,6 +98,7 @@ struct DisplayEntry: View {
         }
     }
 }
+
 
     
 //    func saveChanges() {

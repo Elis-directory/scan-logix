@@ -12,7 +12,7 @@ struct Title: View {
     @Environment(\.modelContext) private var context
     @Environment(\.presentationMode) var presentationMode
     @Query private var items: [NewEntryModel]
-    
+    @State private var scannedUPC: String? = nil
     @State var createTableSheet: Bool = false
     @State var newListItem: String = ""
     
@@ -38,7 +38,9 @@ struct Title: View {
                 createTableSheet = false
             })
             {
-                AddItemView(item: $newListItem)
+                AddItemView(item: $newListItem, upc: scannedUPC ?? "") 
+              
+
                 
             }
            

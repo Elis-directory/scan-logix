@@ -17,9 +17,10 @@ struct MainView: View {
     @State private var isPresentingScanner = false
     @State private var scannedItem: NewEntryModel?
     @State private var showAddItemView = false
-    @State private var addItemSheet = false
+    @State private var scannedUPC: String? = nil
     @State var newListItem: String = ""
-    
+    @State private var addItemSheet = false
+
     var body: some View {
         VStack {
             Title()
@@ -32,22 +33,22 @@ struct MainView: View {
                         items: items,
                         isPresenting: $isPresentingScanner,
                         matchedItem: $scannedItem,
-                        showAddItemView: $showAddItemView
+                        showAddItemView: $showAddItemView,
+                        scannedUPC: $scannedUPC // Pass the scanned UPC to BarcodeScannerView
                     )
                     .fullScreenCover(item: $scannedItem) { item in
                         NavigationStack {
                             DisplayEntry(item: .constant(item))
                         }
-                       
                     }
                     .alert(isPresented: $showAddItemView) {
+                        
                         Alert(
                             title: Text("No Match Found"),
                             message: Text("The scanned barcode does not match any item in the database. Would you like to add a new item?"),
                             primaryButton: .default(Text("Add New Item")) {
                                 showAddItemView = false // Dismiss the alert
                                 isPresentingScanner = false // Dismiss the scanner
-                              
                                 addItemSheet = true // Trigger the presentation of the AddItemView
                             },
                             secondaryButton: .cancel {
@@ -58,8 +59,11 @@ struct MainView: View {
                         )
                     }
                     .sheet(isPresented: $addItemSheet) {
-                        AddItemView(item: .constant("X")) // Use AddItemView to add a new item
+                        AddItemView(item: $newListItem, upc: scannedUPC ?? "") // Provide a default value if scannedUPC is nil
+                        
                     }
+                  
+
                 case .searchState:
                     SearchPage()
                 case .settingsState:
@@ -70,6 +74,7 @@ struct MainView: View {
         }
     }
 }
+
 
 
 #Preview {
