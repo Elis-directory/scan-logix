@@ -31,7 +31,7 @@ struct SearchPage: View {
                         .foregroundColor(.gray)
                 } else {
                     ForEach(filteredItems, id: \.self) { item in
-                        NavigationLink(destination: DisplayEntry(item: item)) {
+                        NavigationLink(destination: DisplayEntry(item: .constant(item))) {
                             VStack(alignment: .leading) {
                                 Text(item.name)
                                     .font(.headline)

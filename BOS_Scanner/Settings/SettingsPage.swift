@@ -102,49 +102,33 @@ struct SettingsRowView: View {
     }
 }
 
-struct SettingsPage: View {
-    @Environment(\.modelContext) private var context
-    @Query private var items: [TableModel]
-    
-  
-     
-       var body: some View {
-           
-           
-     
-          
 
-               NavigationStack {
-                   ZStack {
-                     
-                       List {
-                           
-                           NavigationLink(destination: GeneralSettingsView()) {
-                                            SettingsRowView(settingName: "General")
-                           }
-                           .listRowBackground(Color.clear) // Make row background transparent
-                           
-                           
-                           NavigationLink(destination: PrivacySettingsView()) {
-                               SettingsRowView(settingName: "Privacy")
-                           }
-                           .listRowBackground(Color.clear)
-                         
-                       }
-                      
-                   }
-                   
-                   .listStyle(PlainListStyle()) // Use plain list style
-                   .background(.clear)
-                   
-               }
-               .foregroundStyle(.black)
-               .background(.clear)
-               
-           }
-         
-          
+struct SettingsPage: View {
+    var body: some View {
+        NavigationStack {
+            ZStack {
+                List {
+//                    NavigationLink(destination: GeneralSettingsView()) {
+//                        SettingsRowView(settingName: "General")
+//                    }
+//                    .listRowBackground(Color.clear)
+//                    .background(Color.clear)
+//                    
+                    NavigationLink(destination: PrivacySettingsView()) {
+                        SettingsRowView(settingName: "Privacy")
+                    }
+                    .listRowBackground(Color.clear)
+                    .background(Color.clear)
+                }
+                .listStyle(PlainListStyle())
+            }
+            .background(Color(UIColor.systemBackground))
+        }
+        .foregroundColor(Color.primary)
+        .background(Color(UIColor.systemBackground))
+    }
 }
+
 
 #Preview {
     SettingsPage()

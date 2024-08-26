@@ -28,8 +28,12 @@ struct BarcodeScannerView: UIViewControllerRepresentable {
                 guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject,
                       let stringValue = readableObject.stringValue else { return }
                 AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-                parent.handleScannedCode(stringValue)
                 
+                // Stop the capture session to avoid multiple detections
+                parent.stopCaptureSession()
+                
+                // Handle the scanned code
+                parent.handleScannedCode(stringValue)
             }
         }
     }
@@ -84,6 +88,14 @@ struct BarcodeScannerView: UIViewControllerRepresentable {
 
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
 
+    // Stop the capture session to avoid repeated detections
+    func stopCaptureSession() {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let captureSession = AVCaptureSession()
+            captureSession.stopRunning()
+        }
+    }
+
     func handleScannedCode(_ code: String) {
         DispatchQueue.main.async {
             if let matchedItem = items.first(where: { $0.upc == code }) {
@@ -96,7 +108,6 @@ struct BarcodeScannerView: UIViewControllerRepresentable {
                 isPresenting = false
             }
         }
-      
     }
-
 }
+

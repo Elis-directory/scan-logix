@@ -4,6 +4,8 @@
 //
 //  Created by Eliran Chomoshe on 7/28/24.
 //
+//    @State private var showAddItemView = false
+
 
 import SwiftUI
 import SwiftData
@@ -15,7 +17,9 @@ struct MainView: View {
     @State private var isPresentingScanner = false
     @State private var scannedItem: NewEntryModel?
     @State private var showAddItemView = false
-
+    @State private var addItemSheet = false
+    @State var newListItem: String = ""
+    
     var body: some View {
         VStack {
             Title()
@@ -30,25 +34,31 @@ struct MainView: View {
                         matchedItem: $scannedItem,
                         showAddItemView: $showAddItemView
                     )
-                    .fullScreenCover(item: $scannedItem, onDismiss: {
-                        scannedItem = nil // Clear after dismissal if required
-                    }) { item in
-                        DisplayEntry(item: item)
-                        
+                    .fullScreenCover(item: $scannedItem) { item in
+                        NavigationStack {
+                            DisplayEntry(item: .constant(item))
+                        }
+                       
                     }
-
                     .alert(isPresented: $showAddItemView) {
                         Alert(
                             title: Text("No Match Found"),
                             message: Text("The scanned barcode does not match any item in the database. Would you like to add a new item?"),
                             primaryButton: .default(Text("Add New Item")) {
-                                showAddItemView = true
+                                showAddItemView = false // Dismiss the alert
+                                isPresentingScanner = false // Dismiss the scanner
+                              
+                                addItemSheet = true // Trigger the presentation of the AddItemView
                             },
-                            secondaryButton: .cancel()
+                            secondaryButton: .cancel {
+                                showAddItemView = false
+                                isPresentingScanner = false // Dismiss the scanner
+                                currentView = .homeState
+                            }
                         )
                     }
-                    .sheet(isPresented: $showAddItemView) {
-                        AddItemView(item: .constant("")) // Use AddItemView to add a new item
+                    .sheet(isPresented: $addItemSheet) {
+                        AddItemView(item: .constant("X")) // Use AddItemView to add a new item
                     }
                 case .searchState:
                     SearchPage()
@@ -60,7 +70,6 @@ struct MainView: View {
         }
     }
 }
-
 
 
 #Preview {

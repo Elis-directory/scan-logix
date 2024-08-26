@@ -12,50 +12,59 @@ import PhotosUI
 
 struct DisplayEntry: View {
     @Environment(\.modelContext) private var context
-    @State var item: NewEntryModel
+    @Binding var item: NewEntryModel? 
     @State private var selectedPhoto: UIImage? = nil
     @State private var isPhotoPickerPresented: Bool = false
     @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
         Form {
-            Section {
-                HStack {
-                    ZStack {
-                        if let selectedPhoto = selectedPhoto {
-                            Image(uiImage: selectedPhoto)
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 80, height: 80)
-                                .clipShape(Circle())
-                        } else {
-                            Circle()
-                                .fill(Color.gray.opacity(0.3))
-                                .frame(width: 80, height: 80)
+            if let item = item { // Safely unwrap the optional item
+                Section {
+                    HStack {
+                        ZStack {
+                            if let selectedPhoto = selectedPhoto {
+                                Image(uiImage: selectedPhoto)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 80, height: 80)
+                                    .clipShape(Circle())
+                            } else {
+                                Circle()
+                                    .fill(Color.gray.opacity(0.3))
+                                    .frame(width: 80, height: 80)
+                            }
+                        }
+                        .padding(.trailing)
+                        
+                        Button(action: {
+                            isPhotoPickerPresented = true
+                        }) {
+                            Text(item.name) // Access the unwrapped item's properties
                         }
                     }
-                    .padding(.trailing)
-                    
-                    Button(action: {
-                        isPhotoPickerPresented = true
-                    }) {
-                        Text(item.name)
-                    }
                 }
-            }
-            
-            Section {
-                TextField("Price", text: Binding(
-                    get: { String(format: "%.2f", item.price) },
-                    set: { item.price = Double($0) ?? 0.0 }
-                ))
-                .keyboardType(.decimalPad)
-                .textFieldStyle(PlainTextFieldStyle())
                 
-                TextField("UPC", text: $item.upc)
+                Section {
+                    // Using temporary bindings to safely handle the optional item
+                    TextField("Price", text: Binding(
+                        get: { String(format: "%.2f", item.price) },
+                        set: { item.price = Double($0) ?? 0.0 }
+                    ))
+                    .keyboardType(.decimalPad)
                     .textFieldStyle(PlainTextFieldStyle())
-                
-                // Add any additional fields as needed
+                    
+                    TextField("UPC", text: Binding(
+                        get: { item.upc },
+                        set: { item.upc = $0 }
+                    ))
+                    .textFieldStyle(PlainTextFieldStyle())
+                    
+                    // Add any additional fields as needed
+                }
+            } else {
+                // Handle the case where item is nil, maybe show an error message or a placeholder
+                Text("No item to display")
             }
         }
         .navigationBarItems(
@@ -70,19 +79,19 @@ struct DisplayEntry: View {
     }
 
     func saveItem() {
-//        if let selectedPhoto = selectedPhoto {
-//            item.imageData = selectedPhoto.jpegData(compressionQuality: 0.8)
-//        }
+        if let item = item {
+//            if let selectedPhoto = selectedPhoto {
+//                item.imageData = selectedPhoto.jpegData(compressionQuality: 0.8)
+//            }
 
-        do {
-            try context.save() // Save changes to the context
-        } catch {
-            print("Failed to save item: \(error.localizedDescription)")
+            do {
+                try context.save() // Save changes to the context
+            } catch {
+                print("Failed to save item: \(error.localizedDescription)")
+            }
         }
     }
 }
-
-
 
     
 //    func saveChanges() {
