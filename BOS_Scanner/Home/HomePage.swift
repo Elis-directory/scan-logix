@@ -17,7 +17,7 @@ struct HomePage: View {
     @Environment(\.modelContext) private var context
     @Query private var items: [NewEntryModel]
     @State private var selectedItem: NewEntryModel?
-
+    @State var isDismissed: Bool = false
     @StateObject var newItem = ViewModel()
     @State private var quantity: Int = 1
     @State private var addItemSheet = false
@@ -27,10 +27,12 @@ struct HomePage: View {
             ForEach(items, id: \.self) { item in
                 ZStack {
                     NavigationLink(destination: DisplayEntry(item: .constant(item))) {
-                        Text(item.name)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.vertical, 10)
+                        
                     }
+                    .opacity(0.0)
+                    Text(item.name)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.vertical, 10)
                 }
             }
             .onDelete(perform: { indexSet in
@@ -104,6 +106,11 @@ struct HomePage: View {
 
     
     
+    
+ 
+#Preview {
+    HomePage()
+}
     
  
 #Preview {

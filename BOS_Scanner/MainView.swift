@@ -12,6 +12,7 @@ import SwiftData
 
 struct MainView: View {
     @Environment(\.modelContext) private var context
+    
     @Query private var items: [NewEntryModel]
     @State var currentView: DisplayState = .homeState
     @State private var isPresentingScanner = false

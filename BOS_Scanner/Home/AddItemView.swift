@@ -11,6 +11,7 @@ import PhotosUI
 
 struct AddItemView: View {
     @Environment(\.modelContext) private var context
+ 
     @Binding var item: String
     @State private var price: String = ""
     @State var upc: String

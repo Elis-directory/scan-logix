@@ -94,7 +94,6 @@ struct NavBarView: View {
         .padding(.top, 10)
     }
 }
-
 #Preview {
     @State var displayState: DisplayState = .homeState
     return NavBarView(x: 30, y: 30, displayState: $displayState)

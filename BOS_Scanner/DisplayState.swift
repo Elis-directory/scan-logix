@@ -6,10 +6,11 @@
 //
 
 import Foundation
-enum DisplayState {
+
+enum DisplayState: Hashable {
     case homeState
     case scanState
     case searchState
     case settingsState
-    
 }
+
