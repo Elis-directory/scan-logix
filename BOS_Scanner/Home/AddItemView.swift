@@ -16,7 +16,7 @@ struct AddItemView: View {
     @State private var price: String = ""
     @State var upc: String
     @State private var selectedPhoto: UIImage? = nil
-    @State private var isPhotoPickerPresented: Bool = false
+    @State private var isCameraPresented: Bool = false
     @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
@@ -40,9 +40,9 @@ struct AddItemView: View {
                         .padding(.trailing)
                         
                         Button(action: {
-                            isPhotoPickerPresented = true
+                            isCameraPresented = true
                         }) {
-                            Text("Add Photo")
+                            Text("Take Photo")
                         }
                     }
                 }
@@ -72,8 +72,8 @@ struct AddItemView: View {
                     }
                 }
             )
-            .sheet(isPresented: $isPhotoPickerPresented) {
-                PhotoPicker(selectedImage: $selectedPhoto)
+            .sheet(isPresented: $isCameraPresented) {
+                CameraView(selectedImage: $selectedPhoto)
             }
         }
     }
@@ -118,7 +118,6 @@ struct AddItemView: View {
         }
     }
 }
-
 
 
 
