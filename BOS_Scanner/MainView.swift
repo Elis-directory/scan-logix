@@ -66,6 +66,10 @@ struct MainView: View {
                 .sheet(isPresented: $addItemSheet) {
                     AddItemView(item: $newListItem, upc: scannedUPC ?? "")
                 }
+    
+                   
+
+                    
                 .tabItem {
                     Label("Scan", systemImage: "barcode.viewfinder")
                 }

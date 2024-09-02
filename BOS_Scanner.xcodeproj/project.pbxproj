@@ -22,7 +22,6 @@
 		A93169782C5AAF1E00B4CC60 /* ItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93169772C5AAF1E00B4CC60 /* ItemsView.swift */; };
 		A9957A152C688A99008EFF96 /* DisplayEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9957A142C688A99008EFF96 /* DisplayEntry.swift */; };
 		A9B3AF422C79A686009D7ED9 /* NewEntryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B3AF412C79A686009D7ED9 /* NewEntryModel.swift */; };
-		A9C406B62C7AC50E0040EEF9 /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C406B12C7AC50E0040EEF9 /* ScannerView.swift */; };
 		A9C406BC2C7ACA080040EEF9 /* BarcodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C406BB2C7ACA070040EEF9 /* BarcodeScannerView.swift */; };
 /* End PBXBuildFile section */
 
@@ -43,7 +42,6 @@
 		A93169772C5AAF1E00B4CC60 /* ItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsView.swift; sourceTree = "<group>"; };
 		A9957A142C688A99008EFF96 /* DisplayEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayEntry.swift; sourceTree = "<group>"; };
 		A9B3AF412C79A686009D7ED9 /* NewEntryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEntryModel.swift; sourceTree = "<group>"; };
-		A9C406B12C7AC50E0040EEF9 /* ScannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
 		A9C406BB2C7ACA070040EEF9 /* BarcodeScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeScannerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -114,7 +112,6 @@
 		A93169742C5751A700B4CC60 /* Experimental */ = {
 			isa = PBXGroup;
 			children = (
-				A9C406B12C7AC50E0040EEF9 /* ScannerView.swift */,
 				A922BB522C6EF3B200439A01 /* DisplayState.swift */,
 				A93169772C5AAF1E00B4CC60 /* ItemsView.swift */,
 				A9134D652C686A3C003997D6 /* MainAppView.swift */,
@@ -223,7 +220,6 @@
 				A93169712C574F7700B4CC60 /* AddItemView.swift in Sources */,
 				A922BB5F2C702D3C00439A01 /* SettingsPage.swift in Sources */,
 				A9134D662C686A3C003997D6 /* MainAppView.swift in Sources */,
-				A9C406B62C7AC50E0040EEF9 /* ScannerView.swift in Sources */,
 				A93169602C574B8E00B4CC60 /* MainView.swift in Sources */,
 				A93169782C5AAF1E00B4CC60 /* ItemsView.swift in Sources */,
 				A931695E2C574B8E00B4CC60 /* BOS_ScannerApp.swift in Sources */,

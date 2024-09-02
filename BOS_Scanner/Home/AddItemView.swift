@@ -42,7 +42,7 @@ struct AddItemView: View {
                         Button(action: {
                             isCameraPresented = true
                         }) {
-                            Text("Take Photo")
+                            Text("Click Here To Take Photo")
                         }
                     }
                 }

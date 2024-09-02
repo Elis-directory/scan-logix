@@ -48,11 +48,6 @@ struct HomePage: View {
         context.delete(entry)
     }
 
-    func deleteItem(at index: Int, from table: TableModel) {
-        table.items.remove(at: index)
-        try? context.save()
-    }
-
     @ViewBuilder
     func singleItemUI(item: NewEntryModel) -> some View {
         VStack {
@@ -63,45 +58,6 @@ struct HomePage: View {
         .frame(width: 250, height: 250, alignment: .leading)
     }
 
-    @ViewBuilder
-    func itemsUI(table: TableModel) -> some View {
-        VStack(alignment: .leading) {
-            List {
-                ForEach(table.items, id: \.self) { item in
-                    ZStack {
-                        Text(item.name)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.vertical, 10)
-                    }
-                }
-                .onDelete(perform: { indexSet in
-                    for index in indexSet {
-                        deleteItem(at: index, from: table)
-                    }
-                })
-                .sheet(isPresented: $addItemSheet, onDismiss: {
-                    addItemSheet = false
-                }) {
-//                    AddItemView(item: self.$newItem.title, upc:  self.$newItem.)
-                }
-            }
-        }
-
-        Button(action: {
-            addItemSheet.toggle()
-        }, label: {
-            ZStack {
-                Color(UIColor.secondarySystemBackground)
-                    .frame(maxWidth: .infinity, maxHeight: 50)
-                
-                Text("Add New Item")
-                    .foregroundColor(.white)
-                    .padding()
-                    .background(Color.blue)
-                    .cornerRadius(8)
-            }
-        })
-    }
 }
 
     

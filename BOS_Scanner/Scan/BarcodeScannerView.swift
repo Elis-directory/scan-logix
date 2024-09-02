@@ -7,7 +7,6 @@
 
 import SwiftUI
 import AVFoundation
-import SwiftData
 
 struct BarcodeScannerView: UIViewControllerRepresentable {
     var items: [NewEntryModel]
@@ -15,29 +14,7 @@ struct BarcodeScannerView: UIViewControllerRepresentable {
     @Binding var isPresenting: Bool
     @Binding var matchedItem: NewEntryModel?
     @Binding var showAddItemView: Bool
-    @Binding var scannedUPC: String? // Add this binding to pass the scanned UPC
-
-    class Coordinator: NSObject, AVCaptureMetadataOutputObjectsDelegate {
-        var parent: BarcodeScannerView
-
-        init(parent: BarcodeScannerView) {
-            self.parent = parent
-        }
-
-        func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-            if let metadataObject = metadataObjects.first {
-                guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject,
-                      let stringValue = readableObject.stringValue else { return }
-                AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-                
-                // Stop the capture session to avoid multiple detections
-                parent.stopCaptureSession()
-                
-                // Handle the scanned code
-                parent.handleScannedCode(stringValue)
-            }
-        }
-    }
+    @Binding var scannedUPC: String?
 
     func makeCoordinator() -> Coordinator {
         Coordinator(parent: self)
@@ -45,72 +22,80 @@ struct BarcodeScannerView: UIViewControllerRepresentable {
 
     func makeUIViewController(context: Context) -> UIViewController {
         let viewController = UIViewController()
-        let captureSession = AVCaptureSession()
-
-        DispatchQueue.global(qos: .userInitiated).async {
-            guard let videoCaptureDevice = AVCaptureDevice.default(for: .video) else { return }
-            let videoInput: AVCaptureDeviceInput
-
-            do {
-                videoInput = try AVCaptureDeviceInput(device: videoCaptureDevice)
-            } catch {
-                return
-            }
-
-            if captureSession.canAddInput(videoInput) {
-                captureSession.addInput(videoInput)
-            } else {
-                return
-            }
-
-            let metadataOutput = AVCaptureMetadataOutput()
-
-            if captureSession.canAddOutput(metadataOutput) {
-                captureSession.addOutput(metadataOutput)
-
-                metadataOutput.setMetadataObjectsDelegate(context.coordinator, queue: DispatchQueue.main)
-                metadataOutput.metadataObjectTypes = [.ean8, .ean13]
-            } else {
-                return
-            }
-
-            DispatchQueue.main.async {
-                let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-                previewLayer.frame = viewController.view.layer.bounds
-                previewLayer.videoGravity = .resizeAspectFill
-                viewController.view.layer.addSublayer(previewLayer)
-            }
-
-            captureSession.startRunning()
-        }
-
+        context.coordinator.setupCaptureSession(viewController.view)
         return viewController
     }
 
-    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
-
-    // Stop the capture session to avoid repeated detections
-    func stopCaptureSession() {
-        DispatchQueue.main.async {
-            let captureSession = AVCaptureSession()
-            captureSession.stopRunning()
-        }
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+        // This function can be used to update things like session parameters or react to state changes
     }
 
-    func handleScannedCode(_ code: String) {
-        DispatchQueue.main.async {
-            if let matchedItem = items.first(where: { $0.upc == code }) {
-                print("Item found: \(matchedItem.name)") // Debugging print statement
-                self.matchedItem = matchedItem
-                isPresenting = false
-            } else {
-                print("No match found. Triggering AddItemView.") // Debugging print statement
-                self.scannedUPC = code // Store the scanned UPC code
-                showAddItemView = true
-                isPresenting = false
+    class Coordinator: NSObject, AVCaptureMetadataOutputObjectsDelegate {
+        var parent: BarcodeScannerView
+        var captureSession: AVCaptureSession?
+        var previewLayer: AVCaptureVideoPreviewLayer?
+
+        init(parent: BarcodeScannerView) {
+            self.parent = parent
+        }
+
+        func setupCaptureSession(_ view: UIView) {
+            DispatchQueue.global(qos: .userInitiated).async {
+                let session = AVCaptureSession()
+                guard let videoCaptureDevice = AVCaptureDevice.default(for: .video),
+                      let videoInput = try? AVCaptureDeviceInput(device: videoCaptureDevice),
+                      session.canAddInput(videoInput) else {
+                    print("Failed to set up device input")
+                    return
+                }
+
+                session.addInput(videoInput)
+                let metadataOutput = AVCaptureMetadataOutput()
+                if session.canAddOutput(metadataOutput) {
+                    session.addOutput(metadataOutput)
+                    metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
+                    metadataOutput.metadataObjectTypes = [.ean8, .ean13] // Customize based on your needs
+                } else {
+                    print("Failed to set up metadata output")
+                    return
+                }
+
+                DispatchQueue.main.async {
+                    self.previewLayer = AVCaptureVideoPreviewLayer(session: session)
+                    self.previewLayer?.frame = view.bounds
+                    self.previewLayer?.videoGravity = .resizeAspectFill
+                    view.layer.addSublayer(self.previewLayer!)
+                }
+
+                self.captureSession = session
+                session.startRunning() // Start the session running on a background thread
+            }
+        }
+
+        func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
+            guard let metadataObject = metadataObjects.first,
+                  let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject,
+                  let stringValue = readableObject.stringValue else { return }
+
+            DispatchQueue.main.async {
+                self.handleScannedCode(stringValue)
+            }
+        }
+
+        func handleScannedCode(_ code: String) {
+            DispatchQueue.global(qos: .userInitiated).async {
+                self.captureSession?.stopRunning()
+                DispatchQueue.main.async {
+                    if let matchedItem = self.parent.items.first(where: { $0.upc == code }) {
+                        self.parent.matchedItem = matchedItem
+                        self.parent.isPresenting = false
+                    } else {
+                        self.parent.scannedUPC = code
+                        self.parent.showAddItemView = true
+                        self.parent.isPresenting = false
+                    }
+                }
             }
         }
     }
 }
-
-
