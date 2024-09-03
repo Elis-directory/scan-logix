@@ -79,12 +79,13 @@ struct BarcodeScannerView: UIViewControllerRepresentable {
 
             DispatchQueue.main.async {
                 self.handleScannedCode(stringValue)
+                self.parent.isPresenting = true
             }
         }
 
         func handleScannedCode(_ code: String) {
             DispatchQueue.global(qos: .userInitiated).async {
-                self.captureSession?.stopRunning()
+               // self.captureSession?.stopRunning()
                 DispatchQueue.main.async {
                     if let matchedItem = self.parent.items.first(where: { $0.upc == code }) {
                         self.parent.matchedItem = matchedItem
@@ -95,7 +96,9 @@ struct BarcodeScannerView: UIViewControllerRepresentable {
                         self.parent.isPresenting = false
                     }
                 }
+               
             }
+           
         }
     }
 }

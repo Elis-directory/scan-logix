@@ -46,6 +46,12 @@ struct HomePage: View {
 
     func deleteEntry(entry: NewEntryModel) {
         context.delete(entry)
+//        do {
+//            try context.save()
+//            print("Item saved successfully with image data.")
+//        } catch {
+//            print("Failed to save item: \(error.localizedDescription)")
+//        }
     }
 
     @ViewBuilder
@@ -69,6 +75,4 @@ struct HomePage: View {
 }
     
  
-#Preview {
-    HomePage()
-}
+
