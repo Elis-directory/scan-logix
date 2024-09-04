@@ -54,7 +54,7 @@ struct BarcodeScannerView: UIViewControllerRepresentable {
                 if session.canAddOutput(metadataOutput) {
                     session.addOutput(metadataOutput)
                     metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-                    metadataOutput.metadataObjectTypes = [.ean8, .ean13] // Customize based on your needs
+                    metadataOutput.metadataObjectTypes = [.ean8, .ean13] 
                 } else {
                     print("Failed to set up metadata output")
                     return

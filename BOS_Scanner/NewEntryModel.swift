@@ -1,9 +1,10 @@
-//
 //  NewEntryModel.swift
 //  BOS_Scanner
 //
-//  Created by Eliran Chomoshe on 8/23/24.
+//  This file defines the NewEntryModel class, which models data entries for the Scanner application.
+//  It represents entries stored in a SwiftData-based database, including details like name, price, UPC, and associated image data.
 //
+//  Created by EC
 
 
 import SwiftUI

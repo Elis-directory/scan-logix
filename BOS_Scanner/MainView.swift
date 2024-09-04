@@ -1,20 +1,20 @@
-//
 //  ContentView.swift
 //  BOS_Scanner
 //
-//  Created by Eliran Chomoshe on 7/28/24.
+//  Description:
+//  This file defines the MainView struct, which serves as the primary view for the BOS_Scanner application.
+//  It orchestrates various subviews including the home page, barcode scanner, search page, and settings.
+//  This view manages the application's main navigation and handles the integration of the barcode scanning feature.
 //
-//    @State private var showAddItemView = false
-
+//  Created by EC
 
 import SwiftUI
 import SwiftData
 
 struct MainView: View {
     @Environment(\.modelContext) private var context
-    
     @Query private var items: [NewEntryModel]
-   // @State var currentView: DisplayState = .homeState
+    
     @State private var isPresentingScanner = false
     @State private var scannedItem: NewEntryModel?
     @State private var showAddItemView = false
@@ -32,7 +32,6 @@ struct MainView: View {
                 .tabItem {
                     Label("Home", systemImage: "house")
                 }
-                
                 
                 BarcodeScannerView(
                     items: items,
@@ -66,10 +65,7 @@ struct MainView: View {
                 .sheet(isPresented: $addItemSheet) {
                     AddItemView(item: $newListItem, upc: scannedUPC ?? "")
                 }
-    
-                   
-
-                    
+ 
                 .tabItem {
                     Label("Scan", systemImage: "barcode.viewfinder")
                 }
@@ -84,9 +80,7 @@ struct MainView: View {
                         Label("Settings", systemImage: "gearshape")
                     }
             }
-            
-            
-            
+  
         }
     }
 }
