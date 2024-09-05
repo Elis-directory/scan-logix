@@ -1,9 +1,11 @@
-//
 //  HomePage.swift
 //  BOS_Scanner
 //
-//  Created by Eliran Chomoshe on 8/16/24.
+//  This file contains the SwiftUI view for the Scanner app's home page. It lists all items stored in the
+//  database, providing functionality for navigating to detailed views of each item and deleting entries. This
+//  view serves as the main interface for interacting with the app’s core features.
 //
+//  Created by EC
 
 import SwiftUI
 import SwiftData
@@ -48,25 +50,14 @@ struct HomePage: View {
         context.delete(entry)
         do {
             try context.save()
-            print("Item saved successfully with image data.")
+            print("Item deleted successfully with image data.")
         } catch {
             print("Failed to save item: \(error.localizedDescription)")
         }
     }
 
-    @ViewBuilder
-    func singleItemUI(item: NewEntryModel) -> some View {
-        VStack {
-            Text(item.name)
-            Text("\(item.price)")
-            Text("\(item.id)")
-        }
-        .frame(width: 250, height: 250, alignment: .leading)
-    }
-
 }
 
-    
     
     
  

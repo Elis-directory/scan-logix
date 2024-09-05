@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		A90660CC2C84615B00274324 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90660CB2C84615B00274324 /* CameraView.swift */; };
 		A9134D662C686A3C003997D6 /* MainAppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9134D652C686A3C003997D6 /* MainAppView.swift */; };
-		A922BB532C6EF3B200439A01 /* DisplayState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A922BB522C6EF3B200439A01 /* DisplayState.swift */; };
 		A922BB572C702C9D00439A01 /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A922BB562C702C9C00439A01 /* HomePage.swift */; };
 		A922BB5B2C702CF600439A01 /* SearchPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A922BB5A2C702CF600439A01 /* SearchPage.swift */; };
 		A922BB5F2C702D3C00439A01 /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A922BB5E2C702D3C00439A01 /* SettingsPage.swift */; };
@@ -28,7 +27,6 @@
 /* Begin PBXFileReference section */
 		A90660CB2C84615B00274324 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		A9134D652C686A3C003997D6 /* MainAppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainAppView.swift; sourceTree = "<group>"; };
-		A922BB522C6EF3B200439A01 /* DisplayState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayState.swift; sourceTree = "<group>"; };
 		A922BB562C702C9C00439A01 /* HomePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePage.swift; sourceTree = "<group>"; };
 		A922BB5A2C702CF600439A01 /* SearchPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPage.swift; sourceTree = "<group>"; };
 		A922BB5E2C702D3C00439A01 /* SettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPage.swift; sourceTree = "<group>"; };
@@ -112,7 +110,6 @@
 		A93169742C5751A700B4CC60 /* Experimental */ = {
 			isa = PBXGroup;
 			children = (
-				A922BB522C6EF3B200439A01 /* DisplayState.swift */,
 				A93169772C5AAF1E00B4CC60 /* ItemsView.swift */,
 				A9134D652C686A3C003997D6 /* MainAppView.swift */,
 			);
@@ -214,7 +211,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A9957A152C688A99008EFF96 /* DisplayEntry.swift in Sources */,
-				A922BB532C6EF3B200439A01 /* DisplayState.swift in Sources */,
 				A90660CC2C84615B00274324 /* CameraView.swift in Sources */,
 				A922BB572C702C9D00439A01 /* HomePage.swift in Sources */,
 				A93169712C574F7700B4CC60 /* AddItemView.swift in Sources */,

@@ -1,9 +1,12 @@
-//
-//  TablesView.swift
+//  AddItemView.swift
 //  BOS_Scanner
 //
-//  Created by Eliran Chomoshe on 7/28/24.
+//  This SwiftUI view provides the interface for adding new items to the database. Users can enter details like 
+//  the item's name, price, UPC, and optionally capture a photo. The view includes validation to ensure all
+//  necessary information is filled out before submission. Requires camera and photo library permissions specified
+//  in Info.plist for image functionality.
 //
+//  Created by EC
 
 import SwiftUI
 import SwiftData
@@ -42,7 +45,7 @@ struct AddItemView: View {
                         Button(action: {
                             isCameraPresented = true
                         }) {
-                            Text("Click Here To Take Photo")
+                            Text("Click To Take Photo")
                         }
                     }
                 }
@@ -121,8 +124,6 @@ struct AddItemView: View {
 
 
 
-
-
 struct PhotoPicker: UIViewControllerRepresentable {
     @Binding var selectedImage: UIImage?
     
@@ -169,31 +170,8 @@ struct PhotoPicker: UIViewControllerRepresentable {
     @State var item: String = ""
     @State var price: String = ""
     @State var upc: String = ""
-  
-    
+
 
     return AddItemView(item: $item, upc: upc)
 }
 
-
-
-//                Picker("Picker", selection: $selectedCategory, content: {
-//                    ForEach(listCategories, id: \.self) {
-//                        Text($0)
-//                            .font(.headline)
-//                            //.tag($0)
-//                    }
-//                })
-//                .pickerStyle(MenuPickerStyle())
-//
-          
-//    func addItem() {
-//        let item = ItemModel(id: UUID(), name: "Test", currentPrice: 1.99, pricesHistory: [1.99], hyperlink: "test.com")
-//        let tableItem = TableModel(id: UUID(), name: newListItem, items:[item])
-//        context.insert(tableItem)
-//        //try? context.save()
-//    }
-//
-//    func deleteItem(tableItem: TableModel) {
-//        context.delete(tableItem)
-//    }

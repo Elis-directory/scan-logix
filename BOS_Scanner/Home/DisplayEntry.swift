@@ -1,9 +1,10 @@
-//
-//  Background.swift
+//  DisplayEntry.swift
 //  BOS_Scanner
 //
-//  Created by Eliran Chomoshe on 8/10/24.
+//  This SwiftUI view is responsible for displaying detailed information about an item from the database
+//  and allows for editing its details like price, UPC, and updating its image. It integrates a photo picker for updating item images.
 //
+//  Created by EC
 
 import Foundation
 import SwiftUI
@@ -12,33 +13,30 @@ import PhotosUI
 
 struct DisplayEntry: View {
     @Environment(\.modelContext) private var context
+    @Environment(\.presentationMode) var presentationMode
     @Binding var item: NewEntryModel?
     @State private var selectedPhoto: UIImage? = nil
     @State private var isPhotoPickerPresented: Bool = false
-    @Environment(\.presentationMode) var presentationMode
-
+    
     var body: some View {
         Form {
-            if let item = item { // Safely unwrap the optional item
+            if let item = item {
                 Section {
                     HStack {
                         ZStack {
                             if let selectedPhoto = selectedPhoto {
-                                // Display the selected photo if available
                                 Image(uiImage: selectedPhoto)
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
                                     .frame(width: 80, height: 80)
                                     .clipShape(Circle())
                             } else if let imageData = item.imageData, let uiImage = UIImage(data: imageData) {
-                                // Display the image from the item if available
                                 Image(uiImage: uiImage)
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
                                     .frame(width: 80, height: 80)
                                     .clipShape(Circle())
                             } else {
-                                // Display a placeholder if no image is available
                                 Circle()
                                     .fill(Color.gray.opacity(0.3))
                                     .frame(width: 80, height: 80)
@@ -49,7 +47,7 @@ struct DisplayEntry: View {
                         Button(action: {
                             isPhotoPickerPresented = true
                         }) {
-                            Text(item.name) // Access the unwrapped item's properties
+                            Text(item.name)
                         }
                     }
                 }
@@ -69,7 +67,6 @@ struct DisplayEntry: View {
                     .textFieldStyle(PlainTextFieldStyle())
                 }
             } else {
-                // Handle the case where item is nil, maybe show an error message or a placeholder
                 Text("No item to display")
             }
         }
@@ -91,7 +88,7 @@ struct DisplayEntry: View {
             }
 
             do {
-                try context.save() // Save changes to the context
+                try context.save()
             } catch {
                 print("Failed to save item: \(error.localizedDescription)")
             }
@@ -99,19 +96,5 @@ struct DisplayEntry: View {
     }
 }
 
-
-    
-//    func saveChanges() {
-//            // Find the original item in the context and update it
-//            if let existingItem = context.fetch(NewEntryModel.self).first(where: { $0.id == item.id }) {
-//                existingItem.name = item.name
-//                existingItem.price = item.price
-//                existingItem.upc = item.upc
-//                // Update other properties as needed
-//            }
-//
-//            // Save the context
-//            try? context.save()
-//        }
     
  

@@ -1,4 +1,3 @@
-//
 //  BarcodeScannerView.swift
 //  BOS_Scanner
 //
@@ -7,10 +6,13 @@
 
 import SwiftUI
 import AVFoundation
+import SwiftData
+
 
 struct BarcodeScannerView: UIViewControllerRepresentable {
-    var items: [NewEntryModel]
-    
+    //var items: [NewEntryModel]
+    @Environment(\.modelContext) private var context
+    @Query private var items: [NewEntryModel]
     @Binding var isPresenting: Bool
     @Binding var matchedItem: NewEntryModel?
     @Binding var showAddItemView: Bool
@@ -80,12 +82,13 @@ struct BarcodeScannerView: UIViewControllerRepresentable {
             DispatchQueue.main.async {
                 self.handleScannedCode(stringValue)
                 self.parent.isPresenting = true
+                //self.captureSession?.startRunning()
             }
         }
 
         func handleScannedCode(_ code: String) {
             DispatchQueue.global(qos: .userInitiated).async {
-               // self.captureSession?.stopRunning()
+             // self.captureSession?.stopRunning()
                 DispatchQueue.main.async {
                     if let matchedItem = self.parent.items.first(where: { $0.upc == code }) {
                         self.parent.matchedItem = matchedItem
@@ -96,6 +99,7 @@ struct BarcodeScannerView: UIViewControllerRepresentable {
                         self.parent.isPresenting = false
                     }
                 }
+                
                
             }
            

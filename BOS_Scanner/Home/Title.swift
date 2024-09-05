@@ -1,9 +1,11 @@
-//
-//  title.swift
+//  Title.swift
 //  BOS_Scanner
 //
-//  Created by Eliran Chomoshe on 8/16/24.
+//  This file contains the Title view used in the Scanner app.
+//  It displays the app's main title and provides a button for creating new entries 
+//  in the database.
 //
+//  Created by EC
 
 import SwiftUI
 import SwiftData
@@ -39,9 +41,6 @@ struct Title: View {
             })
             {
                 AddItemView(item: $newListItem, upc: scannedUPC ?? "") 
-              
-
-                
             }
            
         }

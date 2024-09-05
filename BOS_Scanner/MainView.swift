@@ -1,7 +1,6 @@
 //  ContentView.swift
 //  BOS_Scanner
 //
-//  Description:
 //  This file defines the MainView struct, which serves as the primary view for the BOS_Scanner application.
 //  It orchestrates various subviews including the home page, barcode scanner, search page, and settings.
 //  This view manages the application's main navigation and handles the integration of the barcode scanning feature.
@@ -34,7 +33,7 @@ struct MainView: View {
                 }
                 
                 BarcodeScannerView(
-                    items: items,
+                    //items: items,
                     isPresenting: $isPresentingScanner,
                     matchedItem: $scannedItem,
                     showAddItemView: $showAddItemView,
