@@ -14,75 +14,81 @@ struct MainView: View {
     @Environment(\.modelContext) private var context
     @Query private var items: [NewEntryModel]
     
+    @State private var selectedTab = "Home"
     @State private var isPresentingScanner = false
     @State private var scannedItem: NewEntryModel?
     @State private var showAddItemView = false
     @State private var scannedUPC: String? = nil
-    @State var newListItem: String = ""
-    @State private var addItemSheet = false
-    
+    @State private var showAddItemAlert = false
+    @State private var newListItem: String = ""
+
     var body: some View {
         VStack {
             Title()
-            TabView {
+            TabView(selection: $selectedTab) {
                 NavigationStack {
-                    HomePage()
+                    HomePage() // Assuming HomePage is a defined View
                 }
                 .tabItem {
                     Label("Home", systemImage: "house")
                 }
+                .tag("Home")
                 
                 BarcodeScannerView(
-                    //items: items,
                     isPresenting: $isPresentingScanner,
                     matchedItem: $scannedItem,
                     showAddItemView: $showAddItemView,
-                    scannedUPC: $scannedUPC // Pass the scanned UPC to BarcodeScannerView
+                    scannedUPC: $scannedUPC
                 )
                 .fullScreenCover(item: $scannedItem) { item in
                     NavigationStack {
                         DisplayEntry(item: .constant(item))
                     }
                 }
-                .alert(isPresented: $showAddItemView) {
-                    
+                .alert(isPresented: $showAddItemAlert) {
                     Alert(
                         title: Text("No Match Found"),
                         message: Text("The scanned barcode does not match any item in the database. Would you like to add a new item?"),
                         primaryButton: .default(Text("Add New Item")) {
-                            showAddItemView = false
-                            isPresentingScanner = false
-                            addItemSheet = true
+                            showAddItemAlert = false
+                            showAddItemView = true
                         },
                         secondaryButton: .cancel {
-                            showAddItemView = false
-                            isPresentingScanner = false
-                            
+                            showAddItemAlert = false
                         }
                     )
                 }
-                .sheet(isPresented: $addItemSheet) {
+                .sheet(isPresented: $showAddItemView) {
                     AddItemView(item: $newListItem, upc: scannedUPC ?? "")
                 }
- 
                 .tabItem {
                     Label("Scan", systemImage: "barcode.viewfinder")
                 }
+                .tag("Scan")
                 
                 SearchPage()
                     .tabItem {
                         Label("Search", systemImage: "magnifyingglass")
                     }
+                    .tag("Search")
                 
                 SettingsPage()
                     .tabItem {
                         Label("Settings", systemImage: "gearshape")
                     }
+                    .tag("Settings")
             }
-  
+            .onChange(of: selectedTab) { oldValue, newValue in
+                // Only trigger when changing to or from the "Scan" tab
+                if newValue == "Scan" || oldValue == "Scan" {
+                    isPresentingScanner = (newValue == "Scan")
+                }
+            }
         }
     }
 }
+
+
 
 
 

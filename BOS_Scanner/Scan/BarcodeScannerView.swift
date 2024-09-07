@@ -8,13 +8,12 @@ import SwiftUI
 import AVFoundation
 import SwiftData
 
-
 struct BarcodeScannerView: UIViewControllerRepresentable {
-    //var items: [NewEntryModel]
     @Environment(\.modelContext) private var context
     @Query private var items: [NewEntryModel]
     @Binding var isPresenting: Bool
     @Binding var matchedItem: NewEntryModel?
+    @State var showAddItemAlert = false  // Control showing the alert when no match is found
     @Binding var showAddItemView: Bool
     @Binding var scannedUPC: String?
 
@@ -29,7 +28,7 @@ struct BarcodeScannerView: UIViewControllerRepresentable {
     }
 
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-        // This function can be used to update things like session parameters or react to state changes
+        context.coordinator.updateSessionState(isPresenting: isPresenting)
     }
 
     class Coordinator: NSObject, AVCaptureMetadataOutputObjectsDelegate {
@@ -56,21 +55,44 @@ struct BarcodeScannerView: UIViewControllerRepresentable {
                 if session.canAddOutput(metadataOutput) {
                     session.addOutput(metadataOutput)
                     metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-                    metadataOutput.metadataObjectTypes = [.ean8, .ean13] 
+                    metadataOutput.metadataObjectTypes = [.ean8, .ean13] // Barcode types
                 } else {
                     print("Failed to set up metadata output")
                     return
                 }
 
-                DispatchQueue.main.async {
-                    self.previewLayer = AVCaptureVideoPreviewLayer(session: session)
-                    self.previewLayer?.frame = view.bounds
-                    self.previewLayer?.videoGravity = .resizeAspectFill
-                    view.layer.addSublayer(self.previewLayer!)
-                }
-
                 self.captureSession = session
-                session.startRunning() // Start the session running on a background thread
+                self.startCaptureSession(session, view: view)
+            }
+        }
+
+        private func startCaptureSession(_ session: AVCaptureSession, view: UIView) {
+            DispatchQueue.main.async {
+                self.previewLayer = AVCaptureVideoPreviewLayer(session: session)
+                self.previewLayer?.frame = view.bounds
+                self.previewLayer?.videoGravity = .resizeAspectFill
+                view.layer.addSublayer(self.previewLayer!)
+            }
+            session.startRunning() // Start session on background thread
+        }
+
+        func updateSessionState(isPresenting: Bool) {
+            if isPresenting {
+                startSession()
+            } else {
+                stopSession()
+            }
+        }
+
+        private func startSession() {
+            DispatchQueue.global(qos: .userInitiated).async {
+                self.captureSession?.startRunning()
+            }
+        }
+
+        private func stopSession() {
+            DispatchQueue.global(qos: .userInitiated).async {
+                self.captureSession?.stopRunning()
             }
         }
 
@@ -80,29 +102,16 @@ struct BarcodeScannerView: UIViewControllerRepresentable {
                   let stringValue = readableObject.stringValue else { return }
 
             DispatchQueue.main.async {
-                self.handleScannedCode(stringValue)
-                self.parent.isPresenting = true
-                //self.captureSession?.startRunning()
-            }
-        }
-
-        func handleScannedCode(_ code: String) {
-            DispatchQueue.global(qos: .userInitiated).async {
-             // self.captureSession?.stopRunning()
-                DispatchQueue.main.async {
-                    if let matchedItem = self.parent.items.first(where: { $0.upc == code }) {
-                        self.parent.matchedItem = matchedItem
-                        self.parent.isPresenting = false
-                    } else {
-                        self.parent.scannedUPC = code
-                        self.parent.showAddItemView = true
-                        self.parent.isPresenting = false
-                    }
+                self.parent.scannedUPC = stringValue
+                if let matchedItem = self.parent.items.first(where: { $0.upc == stringValue }) {
+                    self.parent.matchedItem = matchedItem
+                    self.parent.isPresenting = true
+                } else {
+                    self.parent.showAddItemAlert = true
                 }
-                
-               
             }
-           
         }
     }
+
 }
+
