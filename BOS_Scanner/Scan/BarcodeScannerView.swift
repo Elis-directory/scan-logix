@@ -1,8 +1,12 @@
 //  BarcodeScannerView.swift
 //  BOS_Scanner
 //
-//  Created by Eliran Chomoshe on 8/24/24.
+//  This file defines the BarcodeScannerView, a SwiftUI view using UIViewControllerRepresentable
+//  to incorporate an AVCaptureSession for scanning barcodes. The scanned barcodes are matched
+//  against items in the SwiftData context. If a match is found, the corresponding item is displayed;
+//  otherwise, an alert prompts the user to add a new item.
 //
+//  Created by EC.
 
 import SwiftUI
 import AVFoundation
@@ -13,7 +17,7 @@ struct BarcodeScannerView: UIViewControllerRepresentable {
     @Query private var items: [NewEntryModel]
     @Binding var isPresenting: Bool
     @Binding var matchedItem: NewEntryModel?
-    @State var showAddItemAlert = false  // Control showing the alert when no match is found
+    @Binding var showAddItemAlert: Bool  // Control showing the alert when no match is found
     @Binding var showAddItemView: Bool
     @Binding var scannedUPC: String?
 
@@ -103,6 +107,8 @@ struct BarcodeScannerView: UIViewControllerRepresentable {
 
             DispatchQueue.main.async {
                 self.parent.scannedUPC = stringValue
+                
+                // Re-fetch the items to ensure the latest state
                 if let matchedItem = self.parent.items.first(where: { $0.upc == stringValue }) {
                     self.parent.matchedItem = matchedItem
                     self.parent.isPresenting = true

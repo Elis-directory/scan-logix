@@ -5,7 +5,7 @@
 //  It orchestrates various subviews including the home page, barcode scanner, search page, and settings.
 //  This view manages the application's main navigation and handles the integration of the barcode scanning feature.
 //
-//  Created by EC
+//  Created by EC.
 
 import SwiftUI
 import SwiftData
@@ -37,6 +37,7 @@ struct MainView: View {
                 BarcodeScannerView(
                     isPresenting: $isPresentingScanner,
                     matchedItem: $scannedItem,
+                    showAddItemAlert: $showAddItemAlert,
                     showAddItemView: $showAddItemView,
                     scannedUPC: $scannedUPC
                 )
@@ -72,18 +73,30 @@ struct MainView: View {
                     }
                     .tag("Search")
                 
-                SettingsPage()
+                PrivacySettingsView()
                     .tabItem {
-                        Label("Settings", systemImage: "gearshape")
+                        Label("Privacy", systemImage: "lock.fill")
+                       
                     }
-                    .tag("Settings")
+                    .tag("Privacy")
+                
+//                SettingsPage()
+//                    .tabItem {
+                       // Label("Settings", systemImage: "gearshape")
+//                     
+//                       
+//                    }
+//                    .tag("Settings")
             }
             .onChange(of: selectedTab) { oldValue, newValue in
                 // Only trigger when changing to or from the "Scan" tab
-                if newValue == "Scan" || oldValue == "Scan" {
-                    isPresentingScanner = (newValue == "Scan")
+                if newValue == "Scan" {
+                    isPresentingScanner = true
+                } else if oldValue == "Scan" {
+                    isPresentingScanner = false
                 }
             }
+
         }
     }
 }

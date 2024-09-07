@@ -4,7 +4,7 @@
 //  This file implements a camera view using the UIImagePickerController to allow users to capture images directly within the app. 
 //  It is used primarily for adding images to new entries. The view requires camera access permissions to be set in the app's Info.plist.
 //
-//  Created by EC
+//  Created by EC.
 
 import SwiftUI
 import AVFoundation

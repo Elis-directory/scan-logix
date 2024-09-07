@@ -4,7 +4,7 @@
 //  This SwiftUI view is responsible for displaying detailed information about an item from the database
 //  and allows for editing its details like price, UPC, and updating its image. It integrates a photo picker for updating item images.
 //
-//  Created by EC
+//  Created by EC.
 
 import Foundation
 import SwiftUI

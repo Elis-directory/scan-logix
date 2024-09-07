@@ -3,10 +3,9 @@
 //
 //  This SwiftUI view provides the interface for adding new items to the database. Users can enter details like 
 //  the item's name, price, UPC, and optionally capture a photo. The view includes validation to ensure all
-//  necessary information is filled out before submission. Requires camera and photo library permissions specified
-//  in Info.plist for image functionality.
+//  necessary information is filled out before submission. Requires camera and photo library permissions specified in Info.plist for image functionality.
 //
-//  Created by EC
+//  Created by EC.
 
 import SwiftUI
 import SwiftData

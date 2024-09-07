@@ -5,7 +5,7 @@
 //  database, providing functionality for navigating to detailed views of each item and deleting entries. This
 //  view serves as the main interface for interacting with the app’s core features.
 //
-//  Created by EC
+//  Created by EC.
 
 import SwiftUI
 import SwiftData
@@ -47,13 +47,17 @@ struct HomePage: View {
     }
 
     func deleteEntry(entry: NewEntryModel) {
-        context.delete(entry)
-        do {
-            try context.save()
-            print("Item deleted successfully with image data.")
-        } catch {
-            print("Failed to save item: \(error.localizedDescription)")
+        DispatchQueue.main.async {
+            context.delete(entry)
+            do {
+                try context.save()
+                // Ensure UI updates happen on the main thread
+                print("Item deleted successfully.")
+            } catch {
+                print("Failed to save item: \(error.localizedDescription)")
+            }
         }
+
     }
 
 }

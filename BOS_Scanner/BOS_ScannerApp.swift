@@ -5,7 +5,7 @@
 //  and attaches the MainView as the root view. This struct is marked with `@main`, indicating that it's
 //  the starting point for the application.
 //
-//  Created by EC
+//  Created by EC.
 
 import SwiftUI
 import SwiftData

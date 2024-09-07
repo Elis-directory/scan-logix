@@ -2,10 +2,9 @@
 //  BOS_Scanner
 //
 //  This file contains the Title view used in the Scanner app.
-//  It displays the app's main title and provides a button for creating new entries 
-//  in the database.
+//  It displays the app's main title and provides a button for creating new entries in the database.
 //
-//  Created by EC
+//  Created by EC.
 
 import SwiftUI
 import SwiftData

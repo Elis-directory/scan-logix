@@ -5,7 +5,7 @@
 //  It represents entries stored in a SwiftData-based database, including details like name, price, UPC, 
 //  and associated image data.
 //
-//  Created by EC
+//  Created by EC.
 
 import SwiftUI
 import SwiftData

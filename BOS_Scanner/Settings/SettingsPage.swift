@@ -1,9 +1,12 @@
-//
 //  SettingsPage.swift
 //  BOS_Scanner
 //
-//  Created by Eliran Chomoshe on 8/16/24.
+//  This file defines the SettingsPage, which provides navigation to various settings views
+//  such as Privacy and (optionally) General settings. The page includes toggles for various
+//  user preferences like Dark Mode, Tracking, and Local Storage in the GeneralSettingsView,
+//  and it presents privacy-related information in the PrivacySettingsView.
 //
+//  Created by EC.
 
 import SwiftUI
 import SwiftData

@@ -1,9 +1,11 @@
-//
 //  SearchPage.swift
 //  BOS_Scanner
 //
-//  Created by Eliran Chomoshe on 8/16/24.
+//  This file defines the SearchPage view, which provides a searchable list of items
+//  from the SwiftData context. Users can filter items by name, UPC, or category through
+//  a search bar. When an item is selected, the app navigates to the detailed DisplayEntry view.
 //
+//  Created by EC.
 
 import SwiftUI
 import SwiftData
