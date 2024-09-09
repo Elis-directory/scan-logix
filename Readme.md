@@ -58,14 +58,11 @@ The project is organized into the following main directories:
 ### **Assets.xcassets**
    - Contains image and color assets for the app.
 
-### **Preview Content**
-   - Likely used for SwiftUI preview data.
-
 ## Getting Started
 
 ### Prerequisites
 - Xcode 14 or later
-- iOS 16 or later for device or simulator
+- iOS 17.0 or later for device or simulator
 
 ### Installation
 
@@ -103,22 +100,4 @@ The project is organized into the following main directories:
 
 Contributions are welcome! If you have suggestions for new features, improvements, or bug fixes, feel free to submit a pull request.
 
-1. Fork the project.
-2. Create a feature branch:
-    ```bash
-    git checkout -b feature/new-feature
-    ```
-3. Commit your changes:
-    ```bash
-    git commit -m "Add new feature"
-    ```
-4. Push the branch:
-    ```bash
-    git push origin feature/new-feature
-    ```
-5. Open a pull request.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
